@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -42,4 +43,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the blog that owns the user.
+     */
+    public function blog(): HasMany
+    {
+        return $this->hasMany(\App\Models\Blog::class, 'blog_id');
+    }
+
+    /**
+     * Get the comment that owns the user.
+     */
+    public function comment(): HasMany
+    {
+        return $this->hasMany(\App\Models\Comment::class, 'comment_id');
+    }
 }

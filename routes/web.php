@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserScreenController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +18,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserScreenController::class, 'welcome']);
+Route::get('/services', [UserScreenController::class, 'services']);
+Route::get('/about', [UserScreenController::class, 'about']);
+Route::get('/contact', [UserScreenController::class, 'contact']);
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/member', [MemberController::class, 'index']);
+
+Route::resource('items', ItemController::class)->only(['index', 'show']);
+Route::resource('blogs', BlogController::class)->only(['index', 'show']);
+Route::resource('carts', CartController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::get('/checkout', [CartController::class, 'checkout']);
